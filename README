@@ -1,0 +1,5 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=2900
+
+Syntax highlight for gitolite (http://github.com/sitaramc/gitolite) configuration file "gitolite.conf".
+
+Source: http://github.com/tmatilai/gitolite.vim
