@@ -1,7 +1,8 @@
 " Vim syntax file
 " Language:	gitolite configuration
+" URL:		http://github.com/tmatilai/gitolite.vim
 " Maintainer:	Teemu Matilainen <teemu.matilainen@iki.fi>
-" Last Change:	2010-01-18
+" Last Change:	2010-02-02
 
 if exists("b:current_syntax")
   finish
@@ -16,14 +17,17 @@ syn match	gitoliteGroupDef	"^\s*@[^ \t=]\+\(\s*=\)\@=" contains=gitoliteUserErro
 syn match	gitolineGroupDefSep	"\s*=" contained nextgroup=gitoliteRepoLine
 syn match	gitoliteRepoDef		"^\s*repo\s" nextgroup=gitoliteRepoLine
 
-syn match	gitoliteRepoLine	".*" contained transparent contains=gitoliteGroup,gitoliteWildRepo,gitoliteCreator,gitoliteRepoError,gitoliteComment
+syn match	gitoliteRepoLine	".*" contained transparent contains=gitoliteGroup,gitoliteWildRepo,gitoliteCreator,gitoliteExtCmdHelper,gitoliteRepoError,gitoliteComment
 syn match	gitoliteUserLine	".*" contained transparent contains=gitoliteGroup,gitolitePreProc,gitoliteUserError,gitoliteComment
 
-syn match	gitoliteWildRepo	"[^ \t]*[\\^$|()[\]*?{}][^ \t]*" contained contains=gitoliteCreator,gitoliteRepoError
+syn match	gitoliteWildRepo	"[ \t=]\@<=[^ \t]*[\\^$|()[\]*?{}][^ \t]*" contained contains=gitoliteCreator,gitoliteRepoError
 syn match	gitoliteGroup		"[ \t=]\@<=@[^ \t]\+" contained contains=gitoliteUserError
 
 syn keyword	gitoliteCreator		CREATER CREATOR contained
 syn keyword	gitolitePreProc		CREATER CREATOR READERS WRITERS contained
+
+syn match	gitoliteExtCmdHelper	"[ \t=]\@<=EXTCMD/" contained nextgroup=gitoliteExtCmd
+syn match	gitoliteExtCmd		"rsync\(\s\|$\)" contained
 
 " Illegal characters
 syn match	gitoliteRepoError	"[^ \t0-9a-zA-Z._@+/\\^$|()[\]*?{}-]\+" contained
@@ -47,7 +51,7 @@ syn match	gitoliteInclude		"^\s*include\s"
 " String
 syn region	gitoliteString		start=+"+ end=+"+ oneline
 
-" Define the default highlighting.
+" Define the default highlighting
 hi def link gitoliteComment		Comment
 hi def link gitoliteTodo		Todo
 hi def link gitoliteGroupDef		gitoliteGroup
@@ -58,6 +62,8 @@ hi def link gitoliteUserError		gitoliteError
 hi def link gitoliteError		Error
 hi def link gitoliteCreator		gitolitePreProc
 hi def link gitolitePreProc		PreProc
+hi def link gitoliteExtCmdHelper	PreProc
+hi def link gitoliteExtCmd		Special
 hi def link gitoliteRepoDef		Type
 hi def link gitoliteKeyword		Keyword
 hi def link gitoliteRefex		String
