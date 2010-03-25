@@ -2,7 +2,7 @@
 " Language:	gitolite configuration
 " URL:		http://github.com/tmatilai/gitolite.vim
 " Maintainer:	Teemu Matilainen <teemu.matilainen@iki.fi>
-" Last Change:	2010-02-13
+" Last Change:	2010-03-16
 
 if exists("b:current_syntax")
   finish
@@ -13,8 +13,8 @@ syn match	gitoliteComment		"\(^\|\s\)#.*" contains=gitoliteTodo
 syn keyword	gitoliteTodo		TODO FIXME XXX NOT contained
 
 " Groups, users and repos
-syn match	gitoliteGroupDef	"^\s*@[^ \t=]\+\(\s*=\)\@=" contains=gitoliteUserError nextgroup=gitolineGroupDefSep
-syn match	gitolineGroupDefSep	"\s*=" contained nextgroup=gitoliteRepoLine
+syn match	gitoliteGroupDef	"\(^\s*\)\@<=@[^=]\{-1,}\(\s*=\)\@=" contains=gitoliteSpaceError,gitoliteUserError nextgroup=gitoliteGroupDefSep
+syn match	gitoliteGroupDefSep	"\s*=" contained nextgroup=gitoliteRepoLine
 syn match	gitoliteRepoDef		"^\s*repo\s" nextgroup=gitoliteRepoLine
 
 syn match	gitoliteRepoLine	".*" contained transparent contains=gitoliteGroup,gitoliteWildRepo,gitoliteCreator,gitoliteExtCmdHelper,gitoliteRepoError,gitoliteComment
@@ -32,13 +32,15 @@ syn match	gitoliteExtCmd		"rsync\(\s\|$\)" contained
 " Illegal characters
 syn match	gitoliteRepoError	"[^ \t0-9a-zA-Z._@+/\\^$|()[\]*?{}-]\+" contained
 syn match	gitoliteUserError	"[^ \t0-9a-zA-Z._@+-]\+" contained
+syn match	gitoliteSpaceError	"\s\+" contained
 
 " Permission
 syn match	gitoliteKeyword		"^\s*\(C\|R\|RW\|RW+\)[ \t=]\@=" nextgroup=gitoliteRefex
 syn match	gitoliteKeyword		"^\s*-[ \t=]\@=" nextgroup=gitoliteDenyRefex
-syn match	gitoliteRefex		"[^=]*="he=e-1 contained contains=gitoliteNameRefex,gitoliteGroup nextgroup=gitoliteUserLine
-syn match	gitoliteDenyRefex	"[^=]*="he=e-1 contained contains=gitoliteNameRefex,gitoliteGroup nextgroup=gitoliteDenyUsers
-syn match	gitoliteNameRefex	"\sNAME/"he=e-1 contained
+syn match	gitoliteRefex		"[^=]*="he=e-1 contained contains=gitoliteSpecialRefex,gitoliteGroup nextgroup=gitoliteUserLine
+syn match	gitoliteDenyRefex	"[^=]*="he=e-1 contained contains=gitoliteSpecialRefex,gitoliteGroup nextgroup=gitoliteDenyUsers
+syn match	gitoliteSpecialRefex	"\sNAME/"he=e-1 contained
+syn match	gitoliteSpecialRefex	"/USER/"hs=s+1,he=e-1 contained
 syn match	gitoliteDenyUsers	".*" contained contains=gitoliteUserError,gitoliteComment
 
 " Configuration
@@ -59,6 +61,7 @@ hi def link gitoliteGroup		Identifier
 hi def link gitoliteWildRepo		Special
 hi def link gitoliteRepoError		gitoliteError
 hi def link gitoliteUserError		gitoliteError
+hi def link gitoliteSpaceError		gitoliteError
 hi def link gitoliteError		Error
 hi def link gitoliteCreator		gitolitePreProc
 hi def link gitolitePreProc		PreProc
@@ -68,7 +71,7 @@ hi def link gitoliteRepoDef		Type
 hi def link gitoliteKeyword		Keyword
 hi def link gitoliteRefex		String
 hi def link gitoliteDenyRefex		gitoliteRefex
-hi def link gitoliteNameRefex		PreProc
+hi def link gitoliteSpecialRefex	PreProc
 hi def link gitoliteDenyUsers		WarningMsg
 hi def link gitoliteConfVariable	Identifier
 hi def link gitoliteInclude		Include
