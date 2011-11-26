@@ -1,5 +1,5 @@
 This is a mirror of http://www.vim.org/scripts/script.php?script_id=2900
 
-Syntax highlight for gitolite (https://github.com/sitaramc/gitolite) configuration file "gitolite.conf".
+Syntax highlight and indent rules for gitolite (https://github.com/sitaramc/gitolite) configuration file "gitolite.conf".
 
 Source: https://github.com/tmatilai/gitolite.vim
